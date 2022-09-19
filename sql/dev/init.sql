@@ -1,0 +1,6 @@
+
+CREATE USER projeto_dac_2022_1 WITH PASSWORD 'projetodac20221';
+
+CREATE DATABASE projeto_dac_2022_1;
+
+GRANT ALL PRIVILEGES ON DATABASE projeto_dac_2022_1 TO projeto_dac_2022_1;
