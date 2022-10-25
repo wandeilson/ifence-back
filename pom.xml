@@ -11,8 +11,8 @@
 	<groupId>br.edu.ifpb.dac.groupd</groupId>
 	<artifactId>projeto-dac-2022-1</artifactId>
 	<version>0.1</version>
-	<name>childfence-dac-2022.1</name>
-	<description>Projeto de Desenvolvimento de Aplicações Corporativas - 2022.1</description>
+	<name>ifence-back</name>
+	<description>Projeto de Pequisa ifence</description>
 	<properties>
 		<java.version>17</java.version>
 	</properties>
@@ -246,6 +246,13 @@
 		<dependency>
 		    <groupId>com.fasterxml.jackson.datatype</groupId>
 		    <artifactId>jackson-datatype-jsr310</artifactId>
+		</dependency>
+
+		<!-- FIREBASE -->
+		<dependency>
+			<groupId>com.google.firebase</groupId>
+			<artifactId>firebase-admin</artifactId>
+			<version>9.1.0</version>
 		</dependency>
 	</dependencies>
 

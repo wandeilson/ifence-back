@@ -18,7 +18,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 @ActiveProfiles("test")
 @Profile("test")
 @SpringBootTest(webEnvironment = WebEnvironment.DEFINED_PORT)
-@ContextConfiguration(initializers = {AbstractInfrastructure.Initializer.class})
+// @ContextConfiguration(initializers = {AbstractInfrastructure.Initializer.class})
 @Testcontainers(disabledWithoutDocker = true)
 public class AbstractInfrastructure {
 	
