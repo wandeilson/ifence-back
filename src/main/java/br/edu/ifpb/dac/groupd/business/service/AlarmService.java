@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import br.edu.ifpb.dac.groupd.business.exception.AlarmNotFoundException;
 import br.edu.ifpb.dac.groupd.business.service.firebase.PushNotificationService;
 import br.edu.ifpb.dac.groupd.model.entities.Alarm;
+import br.edu.ifpb.dac.groupd.model.entities.DeviceToken;
 import br.edu.ifpb.dac.groupd.model.entities.Fence;
 import br.edu.ifpb.dac.groupd.model.entities.Location;
 import br.edu.ifpb.dac.groupd.model.repository.AlarmRepository;
@@ -47,15 +48,7 @@ public class AlarmService {
 		alarm.setDistance(distance);
 		alarm.setExceeded(exceeded);
 
-		PushNotificationRequest request = PushNotificationRequest
-				.builder()
-				.title(String.format("%s saiu da cerca", location.getBracelet().getName()))
-				.message(String.format("A pulseira de %s saiu da cerca %s",
-						location.getBracelet().getName(),
-						location.getBracelet().getMonitor().getName()))
-				.topic("Alarme")
-				.build();
-		pushNotificationService.sendPushNotificationWithoutData(request);
+		notifyUser(location);
 
 		return alarmRepository.save(alarm);
 
@@ -131,4 +124,18 @@ public class AlarmService {
 		return alarmRepository.findByUserAndCreationDateBetween(initialDate, finalDate, userId, pageable);
 	}
 
+	private void notifyUser(Location location) {
+		for (DeviceToken device : location.getBracelet().getUser().getDevices()) {
+			PushNotificationRequest request = PushNotificationRequest
+					.builder()
+					.title(String.format("%s saiu da cerca", location.getBracelet().getName()))
+					.message(String.format("A pulseira de %s saiu da cerca %s",
+							location.getBracelet().getName(),
+							location.getBracelet().getMonitor().getName()))
+					.topic("Alarme")
+					.token(device.getToken())
+					.build();
+			pushNotificationService.sendPushNotificationToToken(request);
+		}
+	}
 }

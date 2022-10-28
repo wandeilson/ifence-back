@@ -1,16 +1,14 @@
 package br.edu.ifpb.dac.groupd.business.service.firebase;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.edu.ifpb.dac.groupd.presentation.dto.firebase.PushNotificationRequest;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Service
 public class PushNotificationService {
-
-    private Logger logger = LoggerFactory.getLogger(PushNotificationService.class);
     
     @Autowired
     private FCMService fcmService;
@@ -19,7 +17,7 @@ public class PushNotificationService {
         try {
             fcmService.sendMessageWithoutData(request);
         } catch (Exception e) {
-            logger.error(e.getMessage());
+            log.error(e.getMessage());
         }
     }
 
@@ -27,7 +25,7 @@ public class PushNotificationService {
         try {
             fcmService.sendMessageToToken(request);
         } catch (Exception e) {
-            logger.error(e.getMessage());
+            log.error(e.getMessage());
         }
     }
 }

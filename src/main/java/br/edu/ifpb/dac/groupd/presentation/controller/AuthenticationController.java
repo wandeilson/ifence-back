@@ -20,6 +20,7 @@ import org.springframework.web.context.WebApplicationContext;
 import br.edu.ifpb.dac.groupd.business.exception.UserNotFoundException;
 import br.edu.ifpb.dac.groupd.business.service.DateUtilsService;
 import br.edu.ifpb.dac.groupd.business.service.converter.UserConverterService;
+import br.edu.ifpb.dac.groupd.business.service.firebase.DeviceTokenService;
 import br.edu.ifpb.dac.groupd.business.service.interfaces.AuthenticationService;
 import br.edu.ifpb.dac.groupd.business.service.interfaces.TokenService;
 import br.edu.ifpb.dac.groupd.business.service.interfaces.UserService;
@@ -47,6 +48,8 @@ public class AuthenticationController {
 	
 	@Autowired
 	private DateUtilsService dateService;
+
+	@Autowired DeviceTokenService deviceTokenService;
 	
 	@PostMapping("/login")
 	public ResponseEntity<?> login(
@@ -61,7 +64,8 @@ public class AuthenticationController {
 		UserResponse userResponse = converter.userToResponse(user);
 		AuthenticationResponse response = new AuthenticationResponse(token, userResponse);
 		
-		
+		deviceTokenService.registerToken(userDetailsDto.getDeviceToken(), user);
+
 		return ResponseEntity.ok(response);
 	}
 	

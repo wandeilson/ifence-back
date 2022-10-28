@@ -14,6 +14,8 @@ public class UserDetailsRequest {
 	@NotBlank
 	@NotEmpty
 	private String password;
+
+	private String deviceToken;
 	
 	public String getUsername() {
 		return username;
@@ -27,5 +29,12 @@ public class UserDetailsRequest {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	
+
+	public String getDeviceToken() {
+		return this.deviceToken;
+	}
+
+	public void setDeviceToken(String deviceToken) {
+		this.deviceToken = deviceToken;
+	}	
 }

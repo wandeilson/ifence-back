@@ -80,6 +80,12 @@ public class User implements Serializable, UserDetails {
 		joinColumns = @JoinColumn(name="user_id"),
 		inverseJoinColumns = @JoinColumn(name="role_id"))
 	private Collection<Role> roles = new HashSet<>();
+
+	@OneToMany(mappedBy = "user")
+	// @JoinTable(name="device_token",
+	// 	joinColumns = @JoinColumn(name="user_id"),
+	// 	inverseJoinColumns = @JoinColumn(name="token"))
+	private Set<DeviceToken> devices = new HashSet<>();
 	
 	public Long getId() {
 		return id;
@@ -194,5 +200,12 @@ public class User implements Serializable, UserDetails {
 	public void setRoles(Collection<Role> roles) {
 		this.roles = roles;
 	}
-	
+
+	public Set<DeviceToken> getDevices() {
+		return this.devices;
+	}
+
+	public void setDevices(Set<DeviceToken> devices) {
+		this.devices = devices;
+	}
 }
