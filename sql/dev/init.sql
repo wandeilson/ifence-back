@@ -1,6 +1,6 @@
 
-CREATE USER projeto_dac_2022_1 WITH PASSWORD 'projetodac20221';
+CREATE USER dev_ifence WITH PASSWORD 'dev_ifence123';
 
-CREATE DATABASE projeto_dac_2022_1;
+CREATE DATABASE ifence;
 
-GRANT ALL PRIVILEGES ON DATABASE projeto_dac_2022_1 TO projeto_dac_2022_1;
+GRANT ALL PRIVILEGES ON DATABASE ifence TO dev_ifence;
