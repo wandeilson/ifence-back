@@ -6,7 +6,7 @@ CREATE TABLE IF NOT EXISTS fences (
 	start_time TIME,
 	finish_time TIME,
 	active BOOLEAN NOT NULL,
-	radius NUMERIC(4,2) DEFAULT 1.0,
+	radius NUMERIC(5,2) DEFAULT 1.0,
 	
 	CONSTRAINT fence_pk PRIMARY KEY (id),
 	CONSTRAINT valid_latitude_fence CHECK (latitude >= -90 AND latitude <= 90),

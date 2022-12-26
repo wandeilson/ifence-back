@@ -62,7 +62,7 @@ public class Fence implements Serializable, Timer{
 	
 	@NotNull
 	@Min(1)
-	@Column(name="radius", columnDefinition = "NUMERIC(4,2)")
+	@Column(name="radius", columnDefinition = "NUMERIC(5,2)")
 	private Double radius;
 	
 	@Valid
