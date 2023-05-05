@@ -3,6 +3,7 @@ package br.edu.ifpb.dac.groupd.business.service;
 import java.util.Optional;
 import java.util.Set;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -29,7 +30,7 @@ public class FenceService {
 	
 	@Autowired
 	private FenceConverterService converter;
-	
+
 	
 	public Fence createFence(Long id, FenceRequest dto) throws UserNotFoundException {
 		Optional<User> register = userRepo.findById(id);
@@ -54,7 +55,6 @@ public class FenceService {
 		
 		if (register.isEmpty())
 			throw new UserNotFoundException(id);
-		
 		return fenceRepo.findAllFencesByUser(id, pageable);
 	}
 	public Page<Fence> searchFencesByName(Long id, String name, Pageable pageable) throws UserNotFoundException {

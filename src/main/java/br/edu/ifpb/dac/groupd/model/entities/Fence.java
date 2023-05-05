@@ -172,6 +172,7 @@ public class Fence implements Serializable, Timer{
 			bracelet.getFences().add(this);
 		}
 	}
+
 	
 	public void removeBracelet(Bracelet bracelet) {
 		this.bracelets.remove(bracelet);

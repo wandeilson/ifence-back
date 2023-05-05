@@ -1,8 +1,13 @@
 package br.edu.ifpb.dac.groupd.business.service;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicBoolean;
 
+import br.edu.ifpb.dac.groupd.business.exception.BraceletRegisteredInFenceException;
+import br.edu.ifpb.dac.groupd.model.entities.Fence;
+import br.edu.ifpb.dac.groupd.model.repository.FenceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -26,6 +31,10 @@ public class BraceletService {
 	
 	@Autowired
 	private BraceletConverterService converter;
+	@Autowired
+	private FenceService fenceService;
+	@Autowired
+	private FenceRepository fenceRepository;
 	
 	// User bracelet
 	public Bracelet createBracelet(Long id, BraceletRequest dto) throws UserNotFoundException {
@@ -100,7 +109,7 @@ public class BraceletService {
 		
 		return braceletRepo.save(mapped);
 	}
-	public void deleteBracelet(Long id, Long braceletId) throws UserNotFoundException, BraceletNotFoundException{
+	public void deleteBracelet(Long id, Long braceletId) throws UserNotFoundException, BraceletNotFoundException, BraceletRegisteredInFenceException {
 		Optional<User> register = userRepo.findById(id);
 		
 		if (register.isEmpty())
@@ -113,6 +122,18 @@ public class BraceletService {
 		if(register.isEmpty()) {
 			throw new BraceletNotFoundException(braceletId);
 		}
+		AtomicBoolean braceletInFence = new AtomicBoolean(false);
+		List<Fence> allFencesForUser = fenceRepository.findAllFencesByUser(id);
+		allFencesForUser.forEach(fence -> {
+			if (fence.getBracelets().contains(registerBracelet.get())) {
+				braceletInFence.set(true);
+			}
+		});
+
+		if(braceletInFence.get()){
+			throw new BraceletRegisteredInFenceException("");
+		}
+
 		user.removeBracelet(registerBracelet.get());
 		userRepo.save(user);
 		braceletRepo.deleteById(braceletId);
