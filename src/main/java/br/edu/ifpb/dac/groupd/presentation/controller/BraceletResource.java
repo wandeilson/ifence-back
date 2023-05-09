@@ -5,6 +5,7 @@ import java.security.Principal;
 
 import javax.validation.Valid;
 
+import br.edu.ifpb.dac.groupd.business.exception.BraceletNameAlreadyInUseException;
 import br.edu.ifpb.dac.groupd.business.exception.BraceletRegisteredInFenceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -45,7 +46,7 @@ public class BraceletResource {
 			Principal principal,
 			@Valid
 			@RequestBody
-			BraceletRequest postDto) throws UserNotFoundException{
+			BraceletRequest postDto) throws UserNotFoundException, BraceletNameAlreadyInUseException {
 		Bracelet bracelet = braceletService.createBracelet(getPrincipalId(principal), postDto);
 		
 		BraceletResponse dto = converter.braceletToResponse(bracelet);

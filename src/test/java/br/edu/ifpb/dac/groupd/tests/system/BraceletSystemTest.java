@@ -10,6 +10,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import br.edu.ifpb.dac.groupd.business.exception.BraceletNameAlreadyInUseException;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
@@ -167,7 +168,7 @@ class BraceletSystemTest {
 		assertThat(driver.getCurrentUrl()).isEqualTo(buildFrontendUrl("bracelets"));
 	}
 	
-	private void registerBracelet() throws UserNotFoundException {
+	private void registerBracelet() throws UserNotFoundException, BraceletNameAlreadyInUseException {
 		BraceletRequest bracelet = new BraceletRequest();
 		bracelet.setName(this.bracelet.getName());
 		this.bracelet = braceletService.createBracelet(getUser().getId(), bracelet);
@@ -193,7 +194,7 @@ class BraceletSystemTest {
 	}
 	
 	@Test
-	void testListBraceletAlreadyRegistered() throws InterruptedException, UserNotFoundException {
+	void testListBraceletAlreadyRegistered() throws InterruptedException, UserNotFoundException, BraceletNameAlreadyInUseException {
 		login();
 		registerBracelet();
 		
@@ -205,7 +206,7 @@ class BraceletSystemTest {
 	}
 	
 	@Test
-	void testEditBraceletRegisteredInvalid() throws InterruptedException, UserNotFoundException {
+	void testEditBraceletRegisteredInvalid() throws InterruptedException, UserNotFoundException, BraceletNameAlreadyInUseException {
 		login();
 		registerBracelet();
 		

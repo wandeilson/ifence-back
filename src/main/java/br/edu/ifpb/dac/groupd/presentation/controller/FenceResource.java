@@ -6,6 +6,7 @@ import java.security.Principal;
 
 import javax.validation.Valid;
 
+import br.edu.ifpb.dac.groupd.business.exception.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -23,10 +24,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import br.edu.ifpb.dac.groupd.business.exception.FenceEmptyException;
-import br.edu.ifpb.dac.groupd.business.exception.FenceNotFoundException;
-import br.edu.ifpb.dac.groupd.business.exception.NoBraceletAvailableException;
-import br.edu.ifpb.dac.groupd.business.exception.UserNotFoundException;
 import br.edu.ifpb.dac.groupd.business.service.FenceService;
 import br.edu.ifpb.dac.groupd.business.service.converter.FenceConverterService;
 import br.edu.ifpb.dac.groupd.model.entities.Fence;
@@ -49,7 +46,7 @@ public class FenceResource {
 			Principal principal,
 			@Valid
 			@RequestBody
-			FenceRequest postDto) throws UserNotFoundException{
+			FenceRequest postDto) throws UserNotFoundException, FenceNameAlreadyInUseException {
 		Fence fence = fenceService.createFence(getPrincipalId(principal), postDto);
 		
 		FenceResponse dto = converter.fenceToResponse(fence);
