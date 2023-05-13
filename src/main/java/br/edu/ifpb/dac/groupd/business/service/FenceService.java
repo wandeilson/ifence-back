@@ -1,18 +1,17 @@
 package br.edu.ifpb.dac.groupd.business.service;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 
+import br.edu.ifpb.dac.groupd.business.exception.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import br.edu.ifpb.dac.groupd.business.exception.FenceEmptyException;
-import br.edu.ifpb.dac.groupd.business.exception.FenceNotFoundException;
-import br.edu.ifpb.dac.groupd.business.exception.NoBraceletAvailableException;
-import br.edu.ifpb.dac.groupd.business.exception.UserNotFoundException;
 import br.edu.ifpb.dac.groupd.business.service.converter.FenceConverterService;
 import br.edu.ifpb.dac.groupd.model.entities.Fence;
 import br.edu.ifpb.dac.groupd.model.entities.User;
@@ -32,7 +31,7 @@ public class FenceService {
 	private FenceConverterService converter;
 
 	
-	public Fence createFence(Long id, FenceRequest dto) throws UserNotFoundException {
+	public Fence createFence(Long id, FenceRequest dto) throws UserNotFoundException, FenceNameAlreadyInUseException {
 		Optional<User> register = userRepo.findById(id);
 		
 		if (register.isEmpty())
@@ -41,7 +40,19 @@ public class FenceService {
 		User user = register.get();
 		
 		Fence mapped = converter.requestToFence(dto);
-		
+		AtomicBoolean nameAlreadyInUse = new AtomicBoolean(false);
+		List<Fence> allFencesFromUser = fenceRepo.findAllFencesByUser(id);
+		allFencesFromUser.forEach(fence ->{
+
+			if(fence.getName().equals(mapped.getName())) {
+				nameAlreadyInUse.set(true);
+			}
+		});
+
+		if(nameAlreadyInUse.get()){
+			throw new FenceNameAlreadyInUseException();
+		}
+
 		Fence fence = fenceRepo.save(mapped);
 		user.addFence(fence);
 		

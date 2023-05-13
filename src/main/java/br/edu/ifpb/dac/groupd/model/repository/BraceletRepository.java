@@ -1,5 +1,6 @@
 package br.edu.ifpb.dac.groupd.model.repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.domain.Page;
@@ -17,6 +18,9 @@ public interface BraceletRepository extends JpaRepository<Bracelet, Long> {
 	
 	@Query(value = "SELECT b FROM Bracelet b WHERE b.user.id = :id")
 	Page<Bracelet> findAllBraceletsByUser(@Param("id") Long id, Pageable pageable);
+
+	@Query(value = "SELECT b FROM Bracelet b WHERE b.user.id = :id")
+	List<Bracelet> findAllBraceletsByUser(@Param("id") Long id);
 	
 	@Query(value = "SELECT b FROM Bracelet b WHERE b.user.id = :id AND lower(b.name) LIKE lower(concat('%', :name,'%'))")
 	Page<Bracelet> findBraceletsByName(@Param("id") Long id, @Param("name") String name,Pageable pageable);
