@@ -115,7 +115,15 @@ public class FenceResource {
 		NoBraceletAvailableException{
 		System.out.println(active);
 		Fence fence = fenceService.setActive(getPrincipalId(principal), fenceId, active);
-		
+
+		for(Bracelet e:fence.getBracelets()){
+			for(Fence j:e.getFences()){
+				if(j.isActive()){
+					return ResponseEntity.badRequest().body("A pulseira está ativa em outra cerca");
+				}
+			}
+		}
+
 		FenceResponse dto = converter.fenceToResponse(fence);
 		
 		return ResponseEntity.ok(dto);
