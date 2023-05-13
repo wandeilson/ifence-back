@@ -1,8 +1,5 @@
 package br.edu.ifpb.dac.groupd.tests.unit;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-
 import java.util.Set;
 
 import javax.validation.ConstraintViolation;
@@ -13,12 +10,15 @@ import javax.validation.ValidatorFactory;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.junit.platform.commons.annotation.Testable;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import br.edu.ifpb.dac.groupd.model.entities.Coordinate;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 @Testable
 @DisplayName("Coordinates")
@@ -82,5 +82,17 @@ class CoordinateTests {
 		violations = validator.validateProperty(coordinate, "longitude");
 		
 		assertEquals(0, violations.size(), () -> "Invalid longitude" );
+	}
+
+	@Test
+	@DisplayName("Latitude is null")
+	void testLatitudeIsNull(){
+		assertNull(coordinate.getLatitude(),"Latitude cannot be null");
+	}
+
+	@Test
+	@DisplayName("Longitude is null")
+	void testLongitudeIsNull(){
+		assertNull(coordinate.getLongitude(),"Longitude cannot be null");
 	}
 }

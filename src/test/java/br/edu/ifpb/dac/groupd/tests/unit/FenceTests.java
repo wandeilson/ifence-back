@@ -42,6 +42,7 @@ class FenceTests {
 	@BeforeEach
 	public void setUpBeforeEach() {
 		fence = new Fence();
+
 	}
 
 	@DisplayName("Valid Radius")
@@ -88,4 +89,6 @@ class FenceTests {
 
 		assertEquals(0, violations.size(), "Null time stamp");
 	}
+
+
 }

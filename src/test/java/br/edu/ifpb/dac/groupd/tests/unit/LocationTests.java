@@ -1,8 +1,5 @@
 package br.edu.ifpb.dac.groupd.tests.unit;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-
 import java.time.LocalDateTime;
 import java.util.Set;
 
@@ -19,6 +16,8 @@ import org.junit.platform.commons.annotation.Testable;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import br.edu.ifpb.dac.groupd.model.entities.Location;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 @Testable
 @DisplayName("Location")
@@ -70,5 +69,17 @@ class LocationTests {
 		violations = validator.validateProperty(location, "creationDate");
 		
 		assertEquals(0, violations.size(), "Valid Timestamp");
+	}
+
+	@Test
+	@DisplayName("Coordinate is null")
+	void testCoordinateIsNull(){
+		assertNull(location.getCoordinate(), "Coordinate cannot be null");
+	}
+
+	@Test
+	@DisplayName("Bracelet is null")
+	void testBraceletIsNull(){
+		assertNull(location.getBracelet(), "Bracelet cannot be null");
 	}
 }

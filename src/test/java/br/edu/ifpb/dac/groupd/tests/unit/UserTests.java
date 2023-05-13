@@ -4,9 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.either;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.only;
 import static org.mockito.Mockito.verify;
@@ -427,4 +425,25 @@ class UserTests {
 			assertEquals(0, violations.size(), () -> "Invalid password" );
 		}
 	}
+
+	@Test
+	void invalidIDset(){
+		User first = new User();
+		first.setId(135L);
+		user.setId(135L);
+		assertThrows(Exception.class, ()->user.setId(135L) );
+	}
+
+	@Test
+	void invalidBracelet(){
+		Bracelet test = new Bracelet();
+		assertEquals(false,user.addBracelet(test) );
+
+	}
+	@Test
+	void RemoveNullBracelet(){
+		Bracelet test = new Bracelet();
+		assertEquals(false, user.removeBracelet(test));
+	}
+
 }

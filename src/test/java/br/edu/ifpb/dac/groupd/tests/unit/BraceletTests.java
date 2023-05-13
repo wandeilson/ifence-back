@@ -1,7 +1,6 @@
 package br.edu.ifpb.dac.groupd.tests.unit;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -17,6 +16,7 @@ import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 
+import br.edu.ifpb.dac.groupd.model.entities.*;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -26,11 +26,6 @@ import org.junit.jupiter.params.provider.ValueSource;
 import org.junit.platform.commons.annotation.Testable;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import br.edu.ifpb.dac.groupd.model.entities.Bracelet;
-import br.edu.ifpb.dac.groupd.model.entities.Coordinate;
-import br.edu.ifpb.dac.groupd.model.entities.Fence;
-import br.edu.ifpb.dac.groupd.model.entities.Location;
 
 @Testable
 @DisplayName("Bracelet")
@@ -139,8 +134,25 @@ class BraceletTests {
 		violations = validator.validateProperty(bracelet, "locations");
 		assertEquals(0, violations.size(), () -> "Invalid location" );
 	}
-	
-	
-	
-		
+
+	@Test
+	void usedMonitor(){
+		Fence monitor = new Fence();
+		Bracelet first = new Bracelet();
+		first.setMonitor(monitor);
+		assertThrows(Exception.class, ()->bracelet.setMonitor(monitor));
+	}
+	@Test
+	void IDviolation(){
+		bracelet.setId(1385L);
+		Bracelet invalid= new Bracelet();
+		assertThrows(Exception.class, ()->invalid.setId(1385L));
+	}
+
+	@Test
+	void userNull(){
+		User teste = new User();
+		assertThrows(Exception.class, ()-> bracelet.setUser(teste));
+	}
+
 }
