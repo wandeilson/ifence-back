@@ -7,6 +7,7 @@ import java.security.Principal;
 import javax.validation.Valid;
 
 import br.edu.ifpb.dac.groupd.business.exception.*;
+import br.edu.ifpb.dac.groupd.model.entities.Bracelet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
