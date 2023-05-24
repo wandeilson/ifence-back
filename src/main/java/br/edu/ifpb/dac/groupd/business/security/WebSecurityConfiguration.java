@@ -79,7 +79,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 			.and()
 				.authorizeRequests()
 					.antMatchers(GET, "/actuator").permitAll()
-					.antMatchers(POST, "/api/signin", "/api/users", "/api/login", "/api/isValidToken").permitAll()
+					.antMatchers(POST, "/api/signin", "/api/users", "/api/login", "/api/isValidToken","/api/send-email").permitAll()
 					.antMatchers("/api/users/**",
 						"/api/bracelets","/api/bracelets/**", 
 						"/api/fences","/api/fences/**", 
