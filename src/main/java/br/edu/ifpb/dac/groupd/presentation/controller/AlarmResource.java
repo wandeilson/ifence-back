@@ -2,20 +2,19 @@ package br.edu.ifpb.dac.groupd.presentation.controller;
 
 import java.security.Principal;
 import java.util.List;
+import java.util.Optional;
 
 import javax.validation.Valid;
 
+import br.edu.ifpb.dac.groupd.model.entities.Fence;
+import br.edu.ifpb.dac.groupd.model.entities.Location;
+import br.edu.ifpb.dac.groupd.model.repository.FenceRepository;
+import br.edu.ifpb.dac.groupd.model.repository.LocationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import br.edu.ifpb.dac.groupd.business.exception.AlarmNotFoundException;
 import br.edu.ifpb.dac.groupd.business.service.AlarmService;
@@ -32,7 +31,34 @@ public class AlarmResource {
 	private AlarmService alarmService;
 	
 	@Autowired
+	private LocationRepository locationRepository;
+	
+	@Autowired
+	private FenceRepository fenceRepository;
+	
+	@Autowired
 	private AlarmConverterService alarmConverter;
+	
+	@PostMapping("/{idLocation}/{idFence}")
+	public ResponseEntity<?> create(@PathVariable("idLocation") Long idLocation,
+									@PathVariable("idFence") Long idFence) throws AlarmNotFoundException{
+		Optional<Location> locationOptional = locationRepository.findById(idLocation);
+		Optional<Fence> fenceOptional = fenceRepository.findById(idFence);
+		Fence fence = null;
+		Location location = null;
+		if (locationOptional.isPresent()){
+			location = locationOptional.get();
+		}
+		
+		if (fenceOptional.isPresent()){
+			fence = fenceOptional.get();
+		}
+
+		Alarm alarm = alarmService.saveAlarm(location, fence);
+
+		return ResponseEntity.ok(alarm);
+
+	}
 	
 
 	@PatchMapping("/{id}")
@@ -76,6 +102,11 @@ public class AlarmResource {
 			.toList();
 		
 		return ResponseEntity.ok(dtos);
+	}
+
+	@GetMapping
+	public ResponseEntity<?> findAll(){
+		return ResponseEntity.ok( alarmService.getAll());
 	}
 	
 	@GetMapping("/fence/{id}")
