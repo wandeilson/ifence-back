@@ -147,7 +147,7 @@ public class AlarmService {
 		for (DeviceToken device : location.getBracelet().getUser().getDevices()) {
 			PushNotificationRequest request = PushNotificationRequest
 					.builder()
-					.title(String.format("%s saiu da cerca", bracelet))
+					.title(String.format("%s saiu da cerca", location.getBracelet().getName()))
 					.message(String.format("A pulseira de %s saiu da cerca %s",
 							location.getBracelet().getName(),
 							location.getBracelet().getMonitor().getName()))
