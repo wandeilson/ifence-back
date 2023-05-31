@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
+import br.edu.ifpb.dac.groupd.presentation.controller.EmailService;
+import br.edu.ifpb.dac.groupd.presentation.dto.EmailDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
@@ -33,6 +35,9 @@ public class AlarmService {
 	@Autowired
 	private CoordinateService coordinateService;
 
+	@Autowired
+	EmailService emailService;
+
 	public Alarm saveAlarm(Location location, Fence fence) {
 		Double distance = coordinateService.calculateDistance(fence.getCoordinate(), location.getCoordinate());
 		if (fence.getRadius() > distance) {
@@ -49,6 +54,7 @@ public class AlarmService {
 		alarm.setExceeded(exceeded);
 
 		notifyUser(location);
+
 
 		return alarmRepository.save(alarm);
 
@@ -125,6 +131,19 @@ public class AlarmService {
 	}
 
 	private void notifyUser(Location location) {
+		String emailUser = location.getBracelet().getUser().getEmail();
+		EmailDto emailDto = new EmailDto();
+		String bracelet = location.getBracelet().getName();
+		String title = String.format("%s saiu da cerca", bracelet);
+		emailDto.setSubject(title);
+		String message = String.format("A pulseira de %s saiu da cerca",
+				location.getBracelet().getName());
+
+		emailDto.setText(message);
+		emailDto.setTo(emailUser);
+		emailService.sendEmail(emailDto);
+
+	/*
 		for (DeviceToken device : location.getBracelet().getUser().getDevices()) {
 			PushNotificationRequest request = PushNotificationRequest
 					.builder()
@@ -137,5 +156,6 @@ public class AlarmService {
 					.build();
 			pushNotificationService.sendPushNotificationToToken(request);
 		}
+		*/
 	}
 }

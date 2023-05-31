@@ -49,6 +49,8 @@ public class Fence implements Serializable, Timer{
 	@Embedded
 	@Valid
 	private Coordinate coordinate;
+
+	//private boolean fenceMovable = false;
 	
 	@Column(name="start_time")
 	private LocalTime startTime;

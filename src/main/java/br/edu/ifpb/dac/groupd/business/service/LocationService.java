@@ -42,10 +42,10 @@ public class LocationService {
 	@Autowired
 	private LocationConverterService locationConverter;
 	
-	public Location create(Long id, LocationRequest dto) throws BraceletNotFoundException, LocationCreationDateInFutureException, UserNotFoundException {
-		userService.findById(id);
+	public Location create(Long userId, LocationRequest dto) throws BraceletNotFoundException, LocationCreationDateInFutureException, UserNotFoundException {
+		userService.findById(userId);
 
-		Bracelet bracelet = braceletService.findByBraceletId(id, dto.getBraceletId());
+		Bracelet bracelet = braceletService.findByBraceletId(userId, dto.getBraceletId());
 		
 		if(dto.getCreationDate() == null){
 			dto.setCreationDate(LocalDateTime.now());
