@@ -5,12 +5,32 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 public class AlarmResponseMin {
 	
 	private Long id;
+
+	private String braceletName;
+
+	private Long braceletId;
 	private Boolean seen;
 	private Double distance;
 	private Double exceeded;
 	@JsonIgnoreProperties(value="bracelets")
 	private FenceResponse fence;
-	
+
+	public Long getBraceletId() {
+		return braceletId;
+	}
+
+	public void setBraceletId(Long braceletId) {
+		this.braceletId = braceletId;
+	}
+
+	public String getBraceletName() {
+		return braceletName;
+	}
+
+	public void setBraceletName(String braceletName) {
+		this.braceletName = braceletName;
+	}
+
 	public Long getId() {
 		return id;
 	}

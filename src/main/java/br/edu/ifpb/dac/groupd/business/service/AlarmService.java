@@ -60,6 +60,10 @@ public class AlarmService {
 
 	}
 
+	public List<Alarm> findAllAlarmsByUser(Long userId){
+		return alarmRepository.findAllAlarmsByUser(userId);
+	}
+
 	public List<Alarm> getAll() {
 		return alarmRepository.findAll();
 	}
