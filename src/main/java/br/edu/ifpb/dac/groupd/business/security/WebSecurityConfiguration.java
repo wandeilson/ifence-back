@@ -78,8 +78,8 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.authenticationEntryPoint(new HttpStatusEntryPoint(UNAUTHORIZED))
 			.and()
 				.authorizeRequests()
-					.antMatchers(GET, "/actuator").permitAll()
-					.antMatchers(POST, "/api/signin", "/api/users", "/api/login", "/api/isValidToken","/api/send-email", "/api/alarms/**").permitAll()
+					.antMatchers(GET, "/actuator", "/api/alarms/**").permitAll()
+					.antMatchers(POST, "/api/signin", "/api/users", "/api/login", "/api/isValidToken","/api/send-email" ).permitAll()
 					.antMatchers("/api/users/**",
 						"/api/bracelets","/api/bracelets/**", 
 						"/api/fences","/api/fences/**", 
