@@ -8,6 +8,7 @@ import javax.validation.Valid;
 
 import br.edu.ifpb.dac.groupd.business.exception.*;
 import br.edu.ifpb.dac.groupd.model.entities.Bracelet;
+import br.edu.ifpb.dac.groupd.model.entities.Coordinate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -65,6 +66,13 @@ public class FenceResource {
 		
 		return ResponseEntity.ok(dtos);
 
+	}
+
+	@PostMapping("/updateCoordinates/{userId}/{fenceId}")
+	public ResponseEntity<?> updateCoordinates(@RequestBody Coordinate newCoordinate,
+											   @PathVariable("userId") Long userId,
+											   @PathVariable("fenceId") Long fenceId ) throws UserNotFoundException {
+		return ResponseEntity.ok().body(fenceService.updateCoordinates(userId,fenceId, newCoordinate));
 	}
 	
 	@GetMapping("/{fenceId}")

@@ -47,6 +47,4 @@ public class LocationRequest {
 		this.creationDate = creationDate;
 	}
 
-
-	
 }
