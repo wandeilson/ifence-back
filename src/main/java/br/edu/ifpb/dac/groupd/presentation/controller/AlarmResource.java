@@ -66,28 +66,16 @@ public class AlarmResource {
 	@GetMapping("/all/{userId}")
 	public ResponseEntity<?> findAllAlarmsByUser (@PathVariable ("userId") Long userId) {
 		List<Alarm> allAlarms = alarmService.findAllAlarmsByUser(userId);
-		System.out.println("Quantos alarmes-> "+allAlarms.size());
-
 		AlarmResponseMin alarmResponseMin = new AlarmResponseMin();
 		List<AlarmResponseMin> allAllarmsResponsesMin = new ArrayList<>();
 		for (Alarm a: allAlarms) {
 			allAllarmsResponsesMin.add(alarmToAlarmResponseMin(a,alarmResponseMin));
 		}
 		return ResponseEntity.ok().body(allAllarmsResponsesMin);
-		/*
-		List<AlarmResponseMin> responseMins = new ArrayList<>();
-		for (AlarmResponseMin al: allAllarmsResponsesMin) {
-			if(addUniqueAlarmsResponses(al,allAllarmsResponsesMin)!= null){
-				responseMins.add((addUniqueAlarmsResponses(al,allAllarmsResponsesMin)));
-			}
-		}
-
-		return ResponseEntity.ok().body(responseMins);
-
-		 */
-
-
 	}
+
+
+
 
 	private AlarmResponseMin addUniqueAlarmsResponses(AlarmResponseMin a,
 															List<AlarmResponseMin> listAlarms){
@@ -171,7 +159,13 @@ public class AlarmResource {
 
 	@GetMapping
 	public ResponseEntity<?> findAll(){
-		return ResponseEntity.ok( alarmService.getAll());
+		List<Alarm> allAlarms = alarmService.getAll();
+		AlarmResponseMin alarmResponseMin = new AlarmResponseMin();
+		List<AlarmResponseMin> allAllarmsResponsesMin = new ArrayList<>();
+		for (Alarm a: allAlarms) {
+			allAllarmsResponsesMin.add(alarmToAlarmResponseMin(a,alarmResponseMin));
+		}
+		return ResponseEntity.ok().body(allAllarmsResponsesMin);
 	}
 	
 	@GetMapping("/fence/{id}")
