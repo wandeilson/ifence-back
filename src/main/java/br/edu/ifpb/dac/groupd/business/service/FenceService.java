@@ -1,12 +1,11 @@
 package br.edu.ifpb.dac.groupd.business.service;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 
 import br.edu.ifpb.dac.groupd.business.exception.*;
+import br.edu.ifpb.dac.groupd.model.entities.Coordinate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -94,6 +93,25 @@ public class FenceService {
 		return registerFence.get();
 	}
 
+	public boolean updateCoordinates(Long userId, Long fenceId, Coordinate newCoordinate) throws UserNotFoundException {
+		Optional<User> userOptional = userRepo.findById(userId);
+		if(userOptional.isEmpty())
+			throw new UserNotFoundException(userId);
+		User user = userOptional.get();
+
+		Iterator<Fence> it = user.getFences().iterator();
+		while(it.hasNext()){
+			Fence f = (Fence)it.next();
+			if(f.getId().equals(fenceId)){
+				f.setCoordinate(newCoordinate);
+			}
+		}
+		System.out.println("Coordenada atualizada");
+		userRepo.save(user);
+		return true;
+	}
+
+
 	public Fence updateFence(Long id, Long fenceId, FenceRequest dto) throws UserNotFoundException, FenceNotFoundException {
 		Optional<User> register = userRepo.findById(id);
 		
@@ -156,5 +174,6 @@ public class FenceService {
 		userRepo.save(user);
 		fenceRepo.deleteById(fenceId);
 	}
-	
+
+
 }

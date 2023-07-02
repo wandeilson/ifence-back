@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
+import br.edu.ifpb.dac.groupd.model.entities.Fence;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -16,6 +17,9 @@ import br.edu.ifpb.dac.groupd.model.entities.Alarm;
 @Repository
 public interface AlarmRepository extends JpaRepository<Alarm, Long> {
 	List<Alarm> findBySeen(Boolean seen);
+
+	@Query(value="SELECT a FROM Alarm a WHERE a.fence.user.id = :id")
+	List<Alarm> findAllAlarmsByUser(@Param("id") Long id);
 	
 	@Query("SELECT a FROM Alarm a WHERE a.fence.id = :fenceId")
 	Page<Alarm> findByFence(@Param("fenceId") Long fenceId, Pageable pageable);

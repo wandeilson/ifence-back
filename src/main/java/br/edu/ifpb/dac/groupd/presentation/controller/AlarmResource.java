@@ -1,6 +1,7 @@
 package br.edu.ifpb.dac.groupd.presentation.controller;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -10,6 +11,8 @@ import br.edu.ifpb.dac.groupd.model.entities.Fence;
 import br.edu.ifpb.dac.groupd.model.entities.Location;
 import br.edu.ifpb.dac.groupd.model.repository.FenceRepository;
 import br.edu.ifpb.dac.groupd.model.repository.LocationRepository;
+import br.edu.ifpb.dac.groupd.presentation.dto.AlarmResponseMin;
+import br.edu.ifpb.dac.groupd.presentation.dto.FenceResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -60,6 +63,53 @@ public class AlarmResource {
 
 	}
 	
+	@GetMapping("/all/{userId}")
+	public ResponseEntity<?> findAllAlarmsByUser (@PathVariable ("userId") Long userId) {
+		List<Alarm> allAlarms = alarmService.findAllAlarmsByUser(userId);
+		AlarmResponseMin alarmResponseMin = new AlarmResponseMin();
+		List<AlarmResponseMin> allAllarmsResponsesMin = new ArrayList<>();
+		for (Alarm a: allAlarms) {
+			allAllarmsResponsesMin.add(alarmToAlarmResponseMin(a,alarmResponseMin));
+		}
+		return ResponseEntity.ok().body(allAllarmsResponsesMin);
+	}
+
+	private AlarmResponseMin addUniqueAlarmsResponses(AlarmResponseMin a,
+															List<AlarmResponseMin> listAlarms){
+		int cont = 0;
+		for (AlarmResponseMin alarm: listAlarms) {
+			if(a.getId().equals(alarm.getId())){
+				cont++;
+			}
+		}
+		if (cont==1){
+			System.out.println("add é true");
+			return a;
+
+		}
+		else{
+			System.out.println("tamanho "+ cont);
+			return null;
+		}
+	}
+
+	private AlarmResponseMin alarmToAlarmResponseMin(Alarm a, AlarmResponseMin alarmResponseMin){
+		alarmResponseMin.setDistance(a.getDistance());
+		alarmResponseMin.setBraceletName(a.getLocation().getBracelet().getName());
+		alarmResponseMin.setBraceletId(a.getLocation().getBracelet().getId());
+		alarmResponseMin.setExceeded(a.getExceeded());
+		alarmResponseMin.setId(a.getId());
+		FenceResponse fenceResponse = new FenceResponse();
+		fenceResponse.setId(a.getFence().getId());
+		fenceResponse.setCoordinate(a.getFence().getCoordinate());
+		fenceResponse.setName(a.getFence().getName());
+		fenceResponse.setRadius(a.getFence().getRadius());
+		fenceResponse.setFinishTime(a.getFence().getFinishTime());
+		fenceResponse.setStartTime(a.getFence().getStartTime());
+		alarmResponseMin.setFence(fenceResponse);
+
+		return alarmResponseMin;
+	}
 
 	@PatchMapping("/{id}")
 	public ResponseEntity<?> alarmSeen(@PathVariable("id") Long idAlarm) throws AlarmNotFoundException{
@@ -106,7 +156,13 @@ public class AlarmResource {
 
 	@GetMapping
 	public ResponseEntity<?> findAll(){
-		return ResponseEntity.ok( alarmService.getAll());
+		List<Alarm> allAlarms = alarmService.getAll();
+		AlarmResponseMin alarmResponseMin = new AlarmResponseMin();
+		List<AlarmResponseMin> allAllarmsResponsesMin = new ArrayList<>();
+		for (Alarm a: allAlarms) {
+			allAllarmsResponsesMin.add(alarmToAlarmResponseMin(a,alarmResponseMin));
+		}
+		return ResponseEntity.ok().body(allAllarmsResponsesMin);
 	}
 	
 	@GetMapping("/fence/{id}")

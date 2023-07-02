@@ -60,6 +60,10 @@ public class AlarmService {
 
 	}
 
+	public List<Alarm> findAllAlarmsByUser(Long userId){
+		return alarmRepository.findAllAlarmsByUser(userId);
+	}
+
 	public List<Alarm> getAll() {
 		return alarmRepository.findAll();
 	}
@@ -134,11 +138,10 @@ public class AlarmService {
 		String emailUser = location.getBracelet().getUser().getEmail();
 		EmailDto emailDto = new EmailDto();
 		String bracelet = location.getBracelet().getName();
-		String title = String.format("%s saiu da cerca", bracelet);
+		String title = String.format("Alarme de Pulseira disparado");
 		emailDto.setSubject(title);
-		String message = String.format("A pulseira de %s saiu da cerca",
-				location.getBracelet().getName());
-
+		String message = String.format("A pulseira de %s saiu da cerca %s",
+				location.getBracelet().getName(), location.getBracelet().getMonitor().getName());
 		emailDto.setText(message);
 		emailDto.setTo(emailUser);
 		emailService.sendEmail(emailDto);
