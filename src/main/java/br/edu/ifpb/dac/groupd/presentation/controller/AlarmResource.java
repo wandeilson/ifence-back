@@ -74,9 +74,6 @@ public class AlarmResource {
 		return ResponseEntity.ok().body(allAllarmsResponsesMin);
 	}
 
-
-
-
 	private AlarmResponseMin addUniqueAlarmsResponses(AlarmResponseMin a,
 															List<AlarmResponseMin> listAlarms){
 		int cont = 0;
